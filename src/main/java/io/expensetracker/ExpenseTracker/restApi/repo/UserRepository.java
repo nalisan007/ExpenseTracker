@@ -1,11 +1,10 @@
 package io.expensetracker.ExpenseTracker.restApi.repo;
 
-import java.util.Optional;
-
+import io.expensetracker.ExpenseTracker.restApi.dto.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import io.expensetracker.ExpenseTracker.restApi.dto.Users;
+import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<Users, Integer> {

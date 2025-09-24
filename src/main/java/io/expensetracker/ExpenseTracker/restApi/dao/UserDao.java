@@ -1,16 +1,15 @@
 package io.expensetracker.ExpenseTracker.restApi.dao;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-
 import io.expensetracker.ExpenseTracker.restApi.EntityMapper.ModelMapperConfig;
 import io.expensetracker.ExpenseTracker.restApi.dto.UserDto;
 import io.expensetracker.ExpenseTracker.restApi.dto.Users;
 import io.expensetracker.ExpenseTracker.restApi.repo.UserRepository;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class UserDao {

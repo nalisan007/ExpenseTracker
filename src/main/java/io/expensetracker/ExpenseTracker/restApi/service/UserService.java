@@ -1,7 +1,10 @@
 package io.expensetracker.ExpenseTracker.restApi.service;
 
-import java.util.List;
-
+import io.expensetracker.ExpenseTracker.restApi.dao.TransactionDao;
+import io.expensetracker.ExpenseTracker.restApi.dao.UserDao;
+import io.expensetracker.ExpenseTracker.restApi.dto.UserDto;
+import io.expensetracker.ExpenseTracker.restApi.dto.Users;
+import io.expensetracker.ExpenseTracker.restApi.exception.InvalidUserException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,11 +13,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import io.expensetracker.ExpenseTracker.restApi.dao.TransactionDao;
-import io.expensetracker.ExpenseTracker.restApi.dao.UserDao;
-import io.expensetracker.ExpenseTracker.restApi.dto.UserDto;
-import io.expensetracker.ExpenseTracker.restApi.dto.Users;
-import io.expensetracker.ExpenseTracker.restApi.exception.InvalidUserException;
+import java.util.List;
 
 @Service
 public class UserService {
