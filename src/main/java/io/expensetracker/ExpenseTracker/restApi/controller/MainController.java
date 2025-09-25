@@ -1,5 +1,7 @@
 package io.expensetracker.ExpenseTracker.restApi.controller;
 
+import io.expensetracker.ExpenseTracker.restApi.dto.RegisterCredentials;
+import io.expensetracker.ExpenseTracker.restApi.dto.UserDto;
 import io.expensetracker.ExpenseTracker.restApi.dto.Users;
 import io.expensetracker.ExpenseTracker.restApi.service.BlacklistService;
 import io.expensetracker.ExpenseTracker.restApi.service.JwtService;
@@ -8,14 +10,14 @@ import io.expensetracker.ExpenseTracker.restApi.service.UserService;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,25 +30,16 @@ public class MainController {
     @Autowired
     JwtService jwtService;
     @Autowired
-    MyUserDetailsService userDetailsService;
-    @Autowired
     BlacklistService blacklistService;
-
-    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
     @Autowired
     private MyUserDetailsService myUserDetailsService;
+    @Autowired
+    ModelMapper modelMapper;
 
     @PostMapping("register")
-    public ResponseEntity<Users> register(@RequestBody Users user){
-
-        if(!userService.doesUserExist(user.getEmail())) {
-            user.setPassword(encoder.encode(user.getPassword()));
-            user.getAccounts().add("Cash");
-            user.getCategories().add("Travel");
-            return userService.saveUser(user);
-        }
-//        return new ResponseEntity<String>("User Already Exist!",HttpStatus.BAD_REQUEST);
-        return null;
+    public ResponseEntity<UserDto> register(@Valid @RequestBody RegisterCredentials cred) {
+        Users user = modelMapper.map(cred,Users.class);
+        return userService.registerUser(user);
     }
 
     @PostMapping("auth/login")
@@ -57,7 +50,7 @@ public class MainController {
 
     @GetMapping("/")
     public String greet(HttpServletRequest req){
-        return "Welcome. Your Session ID is : " + req.getSession().getId();
+        return "Welcome. Your Session ID is : " + req.getSession().getId() + " Please Login / Register";
     }
     @PostMapping("auth/logout")
     public ResponseEntity<String> logout(HttpServletRequest req, Authentication authentication){

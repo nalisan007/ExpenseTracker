@@ -1,9 +1,12 @@
 package io.expensetracker.ExpenseTracker.restApi.service;
 
-import java.util.List;
-
+import io.expensetracker.ExpenseTracker.restApi.dao.TransactionDao;
+import io.expensetracker.ExpenseTracker.restApi.dao.UserDao;
+import io.expensetracker.ExpenseTracker.restApi.dto.MinimalUserDto;
 import io.expensetracker.ExpenseTracker.restApi.dto.PasswordDto;
 import io.expensetracker.ExpenseTracker.restApi.dto.UserDto;
+import io.expensetracker.ExpenseTracker.restApi.dto.Users;
+import io.expensetracker.ExpenseTracker.restApi.exception.InvalidUserException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,15 +14,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import io.expensetracker.ExpenseTracker.restApi.dao.TransactionDao;
-import io.expensetracker.ExpenseTracker.restApi.dao.UserDao;
-import io.expensetracker.ExpenseTracker.restApi.dto.MinimalUserDto;
-import io.expensetracker.ExpenseTracker.restApi.dto.Users;
-import io.expensetracker.ExpenseTracker.restApi.exception.InvalidUserException;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -34,9 +32,18 @@ public class UserService {
     @Autowired
     private ModelMapper modelMapper;
 
-	public ResponseEntity<Users> saveUser(Users user) {
-		return new ResponseEntity<Users>(dao.saveUser(user), HttpStatus.CREATED);
+	public ResponseEntity<UserDto> saveUser(UserDto user) {
+		return new ResponseEntity<UserDto>(modelMapper.map(dao.saveUser(user),UserDto.class), HttpStatus.CREATED);
 
+	}
+	public ResponseEntity<UserDto> registerUser(Users user) {
+		if(!doesUserExist(user.getEmail())) {
+			user.setPassword(new BCryptPasswordEncoder(12).encode(user.getPassword()));
+			user.getAccounts().add("Cash");
+			user.getCategories().add("Travel");
+			return new ResponseEntity<UserDto>(modelMapper.map(dao.registerUser(user),UserDto.class),HttpStatus.CREATED);
+		}
+		throw new InvalidUserException("User already exists with that email!");
 	}
 
 	public ResponseEntity<UserDto> findUserById(int id) {

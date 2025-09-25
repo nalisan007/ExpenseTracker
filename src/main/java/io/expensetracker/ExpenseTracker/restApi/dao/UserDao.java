@@ -1,23 +1,30 @@
 package io.expensetracker.ExpenseTracker.restApi.dao;
 
-import java.util.List;
-import java.util.Optional;
-
+import io.expensetracker.ExpenseTracker.restApi.EntityMapper.ModelMapperConfig;
+import io.expensetracker.ExpenseTracker.restApi.dto.MinimalUserDto;
+import io.expensetracker.ExpenseTracker.restApi.dto.UserDto;
+import io.expensetracker.ExpenseTracker.restApi.dto.Users;
+import io.expensetracker.ExpenseTracker.restApi.repo.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
-import io.expensetracker.ExpenseTracker.restApi.EntityMapper.ModelMapperConfig;
-import io.expensetracker.ExpenseTracker.restApi.dto.MinimalUserDto;
-import io.expensetracker.ExpenseTracker.restApi.dto.Users;
-import io.expensetracker.ExpenseTracker.restApi.repo.UserRepository;
+import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class UserDao {
 	@Autowired
 	UserRepository repo;
+	@Autowired
+	ModelMapper modelMapper;
 
-	public Users saveUser(Users user) {
+	public Users saveUser(UserDto user) {
+
+		Users u = modelMapper.map(user,Users.class);
+		u.setPassword(repo.findById(u.getUserId()).get().getPassword());
+		return repo.save(u);
+	}
+	public Users registerUser(Users user){
 		return repo.save(user);
 	}
 
