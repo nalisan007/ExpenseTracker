@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import io.expensetracker.ExpenseTracker.restApi.dto.Transaction;
@@ -21,7 +22,7 @@ public class TransactionDao {
 	public List<Transaction> findTransactionByUserId(int userId) {
 
 
-        return repo.findAllByUserId(userId);
+        return repo.findAllByUserId(userId,Sort.by("dateTime").descending());
 
 	}
 

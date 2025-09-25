@@ -2,6 +2,8 @@ package io.expensetracker.ExpenseTracker.restApi.controller;
 
 import java.util.List;
 
+import io.expensetracker.ExpenseTracker.restApi.dto.PasswordDto;
+import io.expensetracker.ExpenseTracker.restApi.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -13,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.expensetracker.ExpenseTracker.restApi.dto.UserDto;
+import io.expensetracker.ExpenseTracker.restApi.dto.MinimalUserDto;
 import io.expensetracker.ExpenseTracker.restApi.dto.Users;
 import io.expensetracker.ExpenseTracker.restApi.service.UserService;
 import jakarta.validation.Valid;
@@ -34,23 +36,27 @@ public class UserController {
 	}
 
 	@GetMapping
-	public ResponseEntity<Users> findUserById(@RequestParam @Positive int id) {
+	public ResponseEntity<UserDto> findUserById(@RequestParam @Positive int id) {
 		return service.findUserById(id);
 	}
 
 	@GetMapping("email")
-	public ResponseEntity<Users> findUserByEmail(@RequestParam @Email String email) {
+	public ResponseEntity<UserDto> findUserByEmail(@RequestParam @Email String email) {
 		return service.findUserByEmail(email);
 	}
 
 	@DeleteMapping
-	public ResponseEntity<UserDto> deleteUserById(@RequestParam @Positive int id) {
+	public ResponseEntity<MinimalUserDto> deleteUserById(@RequestParam @Positive int id) {
 		return service.deleteById(id);
 	}
 
 	@GetMapping("all")
-	public ResponseEntity<List<UserDto>> findAllUser() {
+	public ResponseEntity<List<MinimalUserDto>> findAllUser() {
 		return service.findAllUser();
 	}
 
+	@PostMapping("changePassword")
+	public ResponseEntity<String> changePassword(@RequestBody PasswordDto pass){
+		return service.changePassword(pass);
+	}
 }
