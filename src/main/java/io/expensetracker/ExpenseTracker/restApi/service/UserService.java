@@ -95,8 +95,11 @@ public class UserService {
 
 		Users u = dao.findUserById(pass.getUserId());
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
-		if(encoder.encode(pass.getOldPassword()).equals(u.getPassword())){
+
+
+		if(encoder.matches(pass.getOldPassword(),u.getPassword())){
 			u.setPassword(encoder.encode(pass.getNewPassword()));
+			dao.changePassword(u);
 
 			return new ResponseEntity<String>("Password Changed Successfully",HttpStatus.OK);
 
