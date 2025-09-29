@@ -1,6 +1,8 @@
 package io.expensetracker.ExpenseTracker.restApi.exception;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import jakarta.validation.ConstraintViolationException;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -35,5 +38,13 @@ public class GlobalExceptionHandler {
 		List<String> fieldMessages = exc.getBindingResult().getFieldErrors().stream()
 				.map(err -> err.getField() + ": " + err.getDefaultMessage()).toList();
 		return new ResponseEntity<List<String>>(fieldMessages, HttpStatus.BAD_REQUEST);
+	}
+	@ExceptionHandler(NoHandlerFoundException.class)
+	public ResponseEntity<Object> handleNotFound(NoHandlerFoundException ex) {
+		Map<String, Object> body = new LinkedHashMap<>();
+		body.put("Status", HttpStatus.NOT_FOUND.value());
+		body.put("Error", "Resource Not Found");
+		body.put("Message", ex.getMessage());
+		return new ResponseEntity<Object>(body, HttpStatus.NOT_FOUND);
 	}
 }
