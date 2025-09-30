@@ -6,7 +6,7 @@ import jakarta.validation.constraints.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(indexes = {@Index(name = "idx_transactionId" , columnList = "transactionId") , @Index(name = "idx_userId" , columnList = "userId") ,@Index(name = "idx_userId_dateTime" ,columnList = "userId,dateTime")  } )
+@Table(indexes = {@Index(name = "idx_transaction_transactionId" , columnList = "transactionId") , @Index(name = "idx_transaction_userId" , columnList = "userId") ,@Index(name = "idx_transaction_userId_dateTime" ,columnList = "userId,dateTime")  } )
 public class Transaction {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
