@@ -11,7 +11,7 @@ import jakarta.validation.constraints.Pattern;
 
 
 @Entity
-@Table(name = "t_Users")
+@Table(name = "t_Users",indexes = {@Index(name = "idx_userId" , columnList = "userId") , @Index(name="idx_email",columnList = "email")})
 public class Users {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
