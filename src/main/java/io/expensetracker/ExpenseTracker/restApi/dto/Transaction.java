@@ -10,6 +10,7 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 
 @Entity
+@Table(indexes = {@Index(name = "idx_transactionId" , columnList = "transactionId") , @Index(name = "idx_transaction_userId" , columnList = "userId") ,@Index(name = "idx_userId_dateTime" ,columnList = "userId,dateTime")  } )
 public class Transaction {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
