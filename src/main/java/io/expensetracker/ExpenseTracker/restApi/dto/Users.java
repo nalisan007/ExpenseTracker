@@ -1,13 +1,13 @@
 package io.expensetracker.ExpenseTracker.restApi.dto;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
+
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 
 @Entity
