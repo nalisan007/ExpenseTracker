@@ -3,6 +3,8 @@ FROM maven:3.9.2-eclipse-temurin-17 AS build
 
 WORKDIR /app
 
+RUN mkdir -p /root/.m2
+RUN echo '<settings><mirrors><mirror><id>central</id><mirrorOf>*</mirrorOf><url>https://repo.maven.apache.org/maven2</url></mirror></mirrors></settings>' > /root/.m2/settings.xml
 
 COPY pom.xml .
 
