@@ -137,6 +137,8 @@
 		<dependency>
 			<groupId>org.ehcache</groupId>
 			<artifactId>ehcache</artifactId>
+			<version>3.11.1</version>
+
 			<exclusions>
 				<exclusion>
 					<groupId>javax.xml.bind</groupId>
