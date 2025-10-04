@@ -7,6 +7,9 @@ import io.expensetracker.ExpenseTracker.restApi.dto.Users;
 import io.expensetracker.ExpenseTracker.restApi.repo.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -19,16 +22,20 @@ public class UserDao {
 	@Autowired
 	ModelMapper modelMapper;
 
+	@CachePut(value = "usersById" , key = "#user.userId")
 	public Users saveUser(UserDto user) {
 
 		Users u = modelMapper.map(user,Users.class);
 		u.setPassword(repo.findById(u.getUserId()).get().getPassword());
 		return repo.save(u);
 	}
+
+	@CacheEvict(value = "usersById" ,key = "#user.userId")
 	public Users registerUser(Users user){
 		return repo.save(user);
 	}
 
+	@Cacheable(value = "usersById" , key = "#userId")
 	public Users findUserById(int id) {
 		Optional<Users> opuser = repo.findById(id);
 
@@ -40,6 +47,7 @@ public class UserDao {
         return opuser.orElse(null);
     }
 
+	@CacheEvict(value = "usersById" ,key = "#userId")
 	public MinimalUserDto deleteUserById(int id) {
 		Optional<Users> u = repo.findById(id);
 		if (u.isPresent()) {

@@ -11,7 +11,7 @@ import java.util.Set;
 
 
 @Entity
-@Table(name = "t_Users",indexes = {@Index(name = "idx_user_userId" , columnList = "userId") , @Index(name="idx_user_email",columnList = "email")})
+@Table(name = "t_Users",indexes = { @Index(name="idx_user_email",columnList = "email")})
 public class Users {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
