@@ -32,7 +32,7 @@ public class SecurityConfig {
                 csrf(customizer-> customizer.disable())
                 .authorizeHttpRequests(
                         request->request
-                                .requestMatchers("auth/login","auth/login/","/register","/register/","/h2-console/**","/").permitAll()
+                                .requestMatchers("auth/login","auth/login/","/register","/register/","/h2-console/**","/","/actuator/**").permitAll()
 //                                .requestMatchers("deleteExpiredToken").access(new WebExpressionAuthorizationManager("authentication.name =='admin@admin.com'"))
                                 .anyRequest().authenticated()
                 )
