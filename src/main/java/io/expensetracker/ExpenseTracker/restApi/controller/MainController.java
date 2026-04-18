@@ -50,7 +50,7 @@ public class MainController {
 
     @GetMapping("/")
     public String greet(HttpServletRequest req){
-        return "Welcome. Your Session ID is : " + req.getSession().getId() + " Please Login / Register";
+        return "Welcome. Your Session ID is : " + req.getSession().getId() + " Please Login / Register. See Github description for Documentation.";
     }
     @PostMapping("auth/logout")
     public ResponseEntity<String> logout(HttpServletRequest req, Authentication authentication){
